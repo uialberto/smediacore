@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Uibasoft.Smedia.Core\Uibasoft.Smedia.Core.csproj" />
+    <ProjectReference Include="..\Uibasoft.Smedia.DataAccess\Uibasoft.Smedia.DataAccess.csproj" />
+  </ItemGroup>
+
+
+</Project>
