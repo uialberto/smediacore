@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
+using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.DataAccess.UnitOfWorks;
 
 namespace Uibasoft.Smedia.DataAccess.Repositories
 {
-    public class RepoPost
+    public class RepoPost : IRepoPost
     {
-        public IEnumerable<Post> GetPosts()
+        private readonly SmediaContext _context;
+        public RepoPost(SmediaContext context)
         {
-            var posts = Enumerable.Range(1, 10).Select(ele => new Post()
-            {
-                PostId = ele,
-                Description = $"Descripcion {ele}",
-                Date = DateTime.Now,
-                Image = $"https://misapis.com/{ele}",
-                UserId = ele * 2
-            });
-
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<Publicacion>> GetPosts()
+        {
+            var posts = await _context.Publicacion.ToListAsync();
             return posts;
         }
     }

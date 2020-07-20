@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
+using Uibasoft.Smedia.Core.Interfaces;
 using Uibasoft.Smedia.DataAccess.Repositories;
 
 namespace Smedia.WebApi.Controllers
@@ -7,10 +10,15 @@ namespace Smedia.WebApi.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetPosts()
+        private readonly IRepoPost _repoPost;
+        public PostController(IRepoPost  repoPost)
         {
-            var posts = new RepoPost().GetPosts();
+            _repoPost = repoPost ?? throw new ArgumentNullException(nameof(repoPost));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPosts()
+        {
+            var posts = await _repoPost.GetPosts();
             return Ok(posts);
         }
     }

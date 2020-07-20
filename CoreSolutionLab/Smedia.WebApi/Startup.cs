@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.DataAccess.Repositories;
+using Uibasoft.Smedia.DataAccess.UnitOfWorks;
 
 namespace Smedia.WebApi
 {
@@ -26,6 +30,11 @@ namespace Smedia.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Dependencias de Aplicacion
+            services.AddDbContext<SmediaContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));            
+            services.AddTransient<IRepoPost, RepoPost>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
