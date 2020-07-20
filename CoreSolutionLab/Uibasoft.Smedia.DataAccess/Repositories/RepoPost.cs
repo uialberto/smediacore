@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Interfaces;

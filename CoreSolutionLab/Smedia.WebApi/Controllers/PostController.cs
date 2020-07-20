@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Interfaces;
-using Uibasoft.Smedia.DataAccess.Repositories;
 
 namespace Smedia.WebApi.Controllers
 {
@@ -11,7 +10,7 @@ namespace Smedia.WebApi.Controllers
     public class PostController : ControllerBase
     {
         private readonly IRepoPost _repoPost;
-        public PostController(IRepoPost  repoPost)
+        public PostController(IRepoPost repoPost)
         {
             _repoPost = repoPost ?? throw new ArgumentNullException(nameof(repoPost));
         }
