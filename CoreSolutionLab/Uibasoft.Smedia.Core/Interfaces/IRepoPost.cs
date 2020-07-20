@@ -6,6 +6,6 @@ namespace Uibasoft.Smedia.Core.Interfaces
 {
     public interface IRepoPost
     {
-        Task<IEnumerable<Publicacion>> GetPosts();
+        Task<IEnumerable<Post>> GetPosts();
     }
 }
