@@ -21,5 +21,11 @@ namespace Smedia.WebApi.Controllers
             var posts = await _repoPost.GetPosts();
             return Ok(posts);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPost(int id)
+        {
+            var post = await _repoPost.GetPost(id);
+            return Ok(post);
+        }
     }
 }
