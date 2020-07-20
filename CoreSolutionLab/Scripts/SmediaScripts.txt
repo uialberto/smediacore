@@ -1,6 +1,6 @@
 --//Scaffold-DbContext "Server=(localdb)\MSSQLLocalDB;Database=SocialMedia;Integrated Security = true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir UnitOfWorkds
 
-USE [Smedia]
+USE [Smedia] 
 GO
 SET ANSI_NULLS ON
 GO
