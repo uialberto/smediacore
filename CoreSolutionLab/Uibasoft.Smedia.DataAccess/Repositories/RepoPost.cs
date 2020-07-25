@@ -27,5 +27,10 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
             return post;
         }
 
+        public async Task Insert(Post post)
+        {
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+        }
     }
 }
