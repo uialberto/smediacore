@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Smedia.WebApi.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,7 @@ namespace Smedia.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ValidationFilter]
-    public class PostController : ControllerBase // Controller si se quiere usar MVC
+    public class PostController : ControllerBase
     {
         private readonly IRepoPost _repoPost;
         private readonly IMapper _mapper;
@@ -26,29 +26,44 @@ namespace Smedia.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {
-            //Validacion Manual
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
             var posts = await _repoPost.GetPosts();
             var postsDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
-            return Ok(postsDtos);
+            var response = new ApiResponse<IEnumerable<PostDto>>(postsDtos);
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPost(int id)
         {
             var post = await _repoPost.GetPost(id);
             var postDto = _mapper.Map<PostDto>(post);
-            return Ok(postDto);
+            var response = new ApiResponse<PostDto>(postDto);
+            return Ok(response);
         }
         [HttpPost]
         public async Task<IActionResult> Post(PostDto postDto)
         {
             var post = _mapper.Map<Post>(postDto);
             await _repoPost.Insert(post);
-            return Ok(post);
+            postDto = _mapper.Map<PostDto>(post);
+            var response = new ApiResponse<PostDto>(postDto);
+            return Ok(response);            
+        }
+        [HttpPut]
+        public async Task<IActionResult> Put(int id, PostDto postDto)
+        {
+            var post = _mapper.Map<Post>(postDto);
+            post.PostId = id;
+            var result =  await _repoPost.UpdatePost(post);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);            
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {            
+            var result = await _repoPost.DeletePost(id);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
         }
     }
 }

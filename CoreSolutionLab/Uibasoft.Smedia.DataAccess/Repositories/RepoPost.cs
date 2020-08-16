@@ -32,5 +32,23 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> UpdatePost(Post post)
+        {
+            var currentEntity = await GetPost(post.PostId);
+            currentEntity.Date = post.Date;
+            currentEntity.Description = post.Description;
+            currentEntity.Image = post.Image;
+            var rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
+        public async Task<bool> DeletePost(int id)
+        {
+            var currentEntity = await GetPost(id);
+            _context.Posts.Remove(currentEntity);
+             var rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
     }
 }
