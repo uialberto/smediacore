@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.DataAccess.Filters;
 using Uibasoft.Smedia.DataAccess.Repositories;
 using Uibasoft.Smedia.DataAccess.UnitOfWorks;
 
@@ -35,12 +36,21 @@ namespace Smedia.WebApi
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            })
+            .ConfigureApiBehaviorOptions(options => 
+            {
+                options.SuppressModelStateInvalidFilter = true; // Sin Validar el Modelo
             });
 
             // Dependencias de Aplicacion
             services.AddDbContext<SmediaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));            
             services.AddTransient<IRepoPost, RepoPost>();
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

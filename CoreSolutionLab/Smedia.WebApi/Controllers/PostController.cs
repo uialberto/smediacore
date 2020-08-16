@@ -12,8 +12,9 @@ using Uibasoft.Smedia.Core.Interfaces;
 namespace Smedia.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] // Se activan validaciones de modelo otras funcionales de http
-    public class PostController : ControllerBase
+    [ApiController]
+    //[ValidationFilter]
+    public class PostController : ControllerBase // Controller si se quiere usar MVC
     {
         private readonly IRepoPost _repoPost;
         private readonly IMapper _mapper;
@@ -25,16 +26,14 @@ namespace Smedia.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {
+            //Validacion Manual
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
             var posts = await _repoPost.GetPosts();
             var postsDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
-            //var postsDtos = posts.Select(ele => new PostDto()
-            //{
-            //    PostId = ele.PostId,
-            //    Date = ele.Date,
-            //    Description = ele.Description,
-            //    Image = ele.Image,
-            //    UserId = ele.UserId
-            //});
             return Ok(postsDtos);
         }
         [HttpGet("{id}")]
@@ -42,26 +41,11 @@ namespace Smedia.WebApi.Controllers
         {
             var post = await _repoPost.GetPost(id);
             var postDto = _mapper.Map<PostDto>(post);
-            //var postDto = new PostDto()
-            //{
-            //    PostId = post.PostId,
-            //    Date = post.Date,
-            //    Description = post.Description,
-            //    Image = post.Image,
-            //    UserId = post.UserId
-            //};
             return Ok(postDto);
         }
         [HttpPost]
         public async Task<IActionResult> Post(PostDto postDto)
         {
-            //var post = new Post()
-            //{                
-            //    Date = postDto.Date,
-            //    Description = postDto.Description,
-            //    Image = postDto.Image,
-            //    UserId = postDto.UserId
-            //};
             var post = _mapper.Map<Post>(postDto);
             await _repoPost.Insert(post);
             return Ok(post);
