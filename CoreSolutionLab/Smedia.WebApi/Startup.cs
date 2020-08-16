@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,7 +40,7 @@ namespace Smedia.WebApi
             })
             .ConfigureApiBehaviorOptions(options => 
             {
-                options.SuppressModelStateInvalidFilter = true; // Sin Validar el Modelo
+                //options.SuppressModelStateInvalidFilter = true; // Sin Validar el Modelo
             });
 
             // Dependencias de Aplicacion
@@ -50,6 +51,9 @@ namespace Smedia.WebApi
             services.AddMvc(options =>
             {
                 options.Filters.Add<ValidationFilter>();
+            }).AddFluentValidation(options =>
+            {
+                options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             });
         }
 
