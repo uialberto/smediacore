@@ -46,10 +46,11 @@ namespace Smedia.WebApi
 
             // Dependencias de Aplicacion
             services.AddDbContext<SmediaContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));  
-            
-            services.AddTransient<IRepoPost, RepoPost>();
-            services.AddTransient<IRepoUser, RepoUser>();
+                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));           
 
             services.AddTransient<IServicePost, ServicePost>();
 

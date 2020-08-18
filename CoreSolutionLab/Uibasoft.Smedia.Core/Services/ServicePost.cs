@@ -9,32 +9,32 @@ namespace Uibasoft.Smedia.Core.Services
 {
     public class ServicePost : IServicePost
     {
-        private readonly IRepoPost _repoPost;
-        private readonly IRepoUser _repoUser;
-        public ServicePost(IRepoPost pRepoPost, IRepoUser pRepoUser)
+        private readonly IUnitOfWork _unitOfWork;
+        
+        public ServicePost(IUnitOfWork unitOfWork)
         {
-            _repoPost = pRepoPost;
-            _repoUser = pRepoUser;
+            _unitOfWork = unitOfWork;            
         }
 
         public async Task<bool> DeletePost(int id)
         {
-           return await _repoPost.DeletePost(id);
+           await _unitOfWork.RepoPost.Delete(id);
+           return true;
         }
 
         public async Task<Post> GetPost(int id)
         {
-            return await _repoPost.GetPost(id);
+            return await _unitOfWork.RepoPost.GetById(id);
         }
 
         public async Task<IEnumerable<Post>> GetPosts()
         {
-            return await _repoPost.GetPosts();
+            return await _unitOfWork.RepoPost.GetAll();
         }
 
         public async Task Insert(Post post)
         {
-            var user = await _repoUser.GetUser(post.UserId);
+            var user = await _unitOfWork.RepoUser.GetById(post.UserId);
             if (user == null)
             {
                 throw new Exception("Usuario no existe");
@@ -43,12 +43,13 @@ namespace Uibasoft.Smedia.Core.Services
             {
                 throw new Exception("Contiene Sexo.");
             }
-            await _repoPost.Insert(post);
+            await _unitOfWork.RepoPost.Add(post);
         }
 
         public async Task<bool> UpdatePost(Post post)
         {
-           return  await _repoPost.UpdatePost(post);
+           await _unitOfWork.RepoPost.Update(post);
+            return true;
         }
     }
 }
