@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.Core.Services;
 using Uibasoft.Smedia.DataAccess.Filters;
 using Uibasoft.Smedia.DataAccess.Repositories;
 using Uibasoft.Smedia.DataAccess.UnitOfWorks;
@@ -45,8 +46,12 @@ namespace Smedia.WebApi
 
             // Dependencias de Aplicacion
             services.AddDbContext<SmediaContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));            
+                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));  
+            
             services.AddTransient<IRepoPost, RepoPost>();
+            services.AddTransient<IRepoUser, RepoUser>();
+
+            services.AddTransient<IServicePost, ServicePost>();
 
             services.AddMvc(options =>
             {

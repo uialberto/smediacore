@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.DTOs;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.Core.Services;
 
 namespace Smedia.WebApi.Controllers
 {
@@ -16,17 +17,17 @@ namespace Smedia.WebApi.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IRepoPost _repoPost;
+        private readonly IServicePost _servicePost;
         private readonly IMapper _mapper;
-        public PostController(IRepoPost repoPost, IMapper pMapper)
+        public PostController(IServicePost pServicePost, IMapper pMapper)
         {
-            _repoPost = repoPost ?? throw new ArgumentNullException(nameof(repoPost));
+            _servicePost = pServicePost ?? throw new ArgumentNullException(nameof(pServicePost));
             _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));
         }
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {
-            var posts = await _repoPost.GetPosts();
+            var posts = await _servicePost.GetPosts();
             var postsDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
             var response = new ApiResponse<IEnumerable<PostDto>>(postsDtos);
             return Ok(response);
@@ -34,7 +35,7 @@ namespace Smedia.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPost(int id)
         {
-            var post = await _repoPost.GetPost(id);
+            var post = await _servicePost.GetPost(id);
             var postDto = _mapper.Map<PostDto>(post);
             var response = new ApiResponse<PostDto>(postDto);
             return Ok(response);
@@ -43,7 +44,7 @@ namespace Smedia.WebApi.Controllers
         public async Task<IActionResult> Post(PostDto postDto)
         {
             var post = _mapper.Map<Post>(postDto);
-            await _repoPost.Insert(post);
+            await _servicePost.Insert(post);
             postDto = _mapper.Map<PostDto>(post);
             var response = new ApiResponse<PostDto>(postDto);
             return Ok(response);            
@@ -53,7 +54,7 @@ namespace Smedia.WebApi.Controllers
         {
             var post = _mapper.Map<Post>(postDto);
             post.PostId = id;
-            var result =  await _repoPost.UpdatePost(post);
+            var result =  await _servicePost.UpdatePost(post);
             var response = new ApiResponse<bool>(result);
             return Ok(response);            
         }
@@ -61,7 +62,7 @@ namespace Smedia.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {            
-            var result = await _repoPost.DeletePost(id);
+            var result = await _servicePost.DeletePost(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
         }
