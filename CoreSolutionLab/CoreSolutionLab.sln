@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Tests", "05 Tests", "{99
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uibasoft.Smedia.UnitTests", "Uibasoft.Smedia.UnitTests\Uibasoft.Smedia.UnitTests.csproj", "{5DFECFCE-49F5-4FF0-916E-B84CC83DB374}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uibasoft.Smedia.IntegrationTests", "Uibasoft.Smedia.IntegrationTests\Uibasoft.Smedia.IntegrationTests.csproj", "{CB0EA4B4-33E6-43AC-99DB-052E0998924E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{5DFECFCE-49F5-4FF0-916E-B84CC83DB374}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DFECFCE-49F5-4FF0-916E-B84CC83DB374}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DFECFCE-49F5-4FF0-916E-B84CC83DB374}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB0EA4B4-33E6-43AC-99DB-052E0998924E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB0EA4B4-33E6-43AC-99DB-052E0998924E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB0EA4B4-33E6-43AC-99DB-052E0998924E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB0EA4B4-33E6-43AC-99DB-052E0998924E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{27FE2ABD-AC98-44DD-9773-068670A49E96} = {2938ED5B-1506-44CF-A8E4-382BE98A5150}
 		{CFF4FF67-7C75-499E-B7BB-F9BB5155212A} = {6AFA7A5F-B265-47A6-A1F4-1D9AF4F6A3CC}
 		{5DFECFCE-49F5-4FF0-916E-B84CC83DB374} = {996CF3C1-C4B6-40AB-8510-A6AE00F72A07}
+		{CB0EA4B4-33E6-43AC-99DB-052E0998924E} = {996CF3C1-C4B6-40AB-8510-A6AE00F72A07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D9D7DBA-B591-4DAB-AB80-0470B102DACF}
