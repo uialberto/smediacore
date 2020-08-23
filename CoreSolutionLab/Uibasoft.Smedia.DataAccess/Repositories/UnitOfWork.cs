@@ -12,7 +12,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
     {
         private readonly SmediaContext _context;
 
-        private readonly IRepository<Post> _repoPost;
+        private readonly IRepoPost _repoPost;
         private readonly IRepository<User> _repoUser;
         private readonly IRepository<Comment> _repoComment;
 
@@ -20,7 +20,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         {
             _context = context;
         }
-        public IRepository<Post> RepoPost => _repoPost ?? new BaseRepository<Post>(_context);
+        public IRepoPost RepoPost => _repoPost ?? new RepoPost(_context);
 
         public IRepository<User> RepoUser => _repoUser ?? new BaseRepository<User>(_context);
 

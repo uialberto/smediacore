@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
@@ -14,9 +16,9 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         {
 
         }
-        public Task<IEnumerable<Post>> GetPostsByUser(int idUser)
+        public async Task<IEnumerable<Post>> GetPostsByUser(int userId)
         {
-            throw new NotImplementedException();
+            return await _entities.Where(ele => ele.UserId == userId).ToListAsync();
         }
     }
 }

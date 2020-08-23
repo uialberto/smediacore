@@ -12,7 +12,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
     public class BaseRepository<TElement> : IRepository<TElement> where TElement : BaseEntity
     {
         private readonly SmediaContext _context;
-        private DbSet<TElement> _entities;
+        protected DbSet<TElement> _entities;
         public BaseRepository(SmediaContext context)
         {
             _context = context;

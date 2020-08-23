@@ -4,10 +4,8 @@ using Uibasoft.Smedia.Core.Entities;
 
 namespace Uibasoft.Smedia.Core.Interfaces
 {
-    public interface IRepoPost
+    public interface IRepoPost : IRepository<Post>
     {
         Task<IEnumerable<Post>> GetPostsByUser(int idUser);
-
-
     }
 }

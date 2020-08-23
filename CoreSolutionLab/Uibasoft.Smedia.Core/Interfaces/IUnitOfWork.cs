@@ -8,7 +8,7 @@ namespace Uibasoft.Smedia.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Post> RepoPost { get; }
+        IRepoPost RepoPost { get; }
         IRepository<User> RepoUser { get; }
         IRepository<Comment> RepoComment { get; }
         void SaveChanges();

@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System;
 using Uibasoft.Smedia.Core.Interfaces;
 using Uibasoft.Smedia.Core.Services;
 using Uibasoft.Smedia.DataAccess.Filters;
@@ -35,11 +29,14 @@ namespace Smedia.WebApi
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalExceptionFilter>();
+            }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             })
-            .ConfigureApiBehaviorOptions(options => 
+            .ConfigureApiBehaviorOptions(options =>
             {
                 //options.SuppressModelStateInvalidFilter = true; // Sin Validar el Modelo
             });
@@ -50,7 +47,7 @@ namespace Smedia.WebApi
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));           
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddTransient<IServicePost, ServicePost>();
 
