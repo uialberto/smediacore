@@ -5,10 +5,12 @@ using Smedia.WebApi.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.DTOs;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.Core.QueryFilters;
 using Uibasoft.Smedia.Core.Services;
 
 namespace Smedia.WebApi.Controllers
@@ -25,9 +27,11 @@ namespace Smedia.WebApi.Controllers
             _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));
         }
         [HttpGet]
-        public async Task<IActionResult> GetPosts()
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
+        public IActionResult GetPosts([FromQuery] PostQueryFilter filters)
         {
-            var posts = await _servicePost.GetPosts();
+            var posts = _servicePost.GetPosts(filters);
             var postsDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
             var response = new ApiResponse<IEnumerable<PostDto>>(postsDtos);
             return Ok(response);
@@ -54,7 +58,7 @@ namespace Smedia.WebApi.Controllers
         {
             var post = _mapper.Map<Post>(postDto);
             post.Id = id;
-            var result =  await _servicePost.UpdatePost(post);
+            var result = await  _servicePost.UpdatePost(post);
             var response = new ApiResponse<bool>(result);
             return Ok(response);            
         }

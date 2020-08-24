@@ -8,10 +8,10 @@ namespace Uibasoft.Smedia.Core.Interfaces
 {
     public interface IRepository<TElement> where TElement : BaseEntity
     {
-        Task<IEnumerable<TElement>> GetAll();
+        IEnumerable<TElement> GetAll();
         Task<TElement> GetById(int id);
         Task Add(TElement id);
-        Task Update(TElement id);
+        void Update(TElement id);
         Task Delete( int id);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
@@ -21,8 +22,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         }
         public async Task Add(TElement entity)
         {
-            _entities.Add(entity);
-            await _context.SaveChangesAsync();
+            await _entities.AddAsync(entity);            
         }
 
         public async Task Delete(int id)
@@ -32,9 +32,9 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<TElement>> GetAll()
+        public IEnumerable<TElement> GetAll()
         {
-            return await _entities.ToListAsync();
+            return _entities.AsEnumerable();
         }
 
         public async Task<TElement> GetById(int id)
@@ -42,10 +42,9 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
             return await _entities.FindAsync(id);
         }
 
-        public async Task Update(TElement entity)
+        public void Update(TElement entity)
         {
-            _entities.Update(entity);
-            await _context.SaveChangesAsync();
+            _entities.Update(entity);            
         }
     }
 }

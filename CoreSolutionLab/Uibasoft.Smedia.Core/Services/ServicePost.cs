@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Exceptions;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.Core.QueryFilters;
 
 namespace Uibasoft.Smedia.Core.Services
 {
@@ -21,6 +22,7 @@ namespace Uibasoft.Smedia.Core.Services
         public async Task<bool> DeletePost(int id)
         {
            await _unitOfWork.RepoPost.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
            return true;
         }
 
@@ -29,9 +31,22 @@ namespace Uibasoft.Smedia.Core.Services
             return await _unitOfWork.RepoPost.GetById(id);
         }
 
-        public async Task<IEnumerable<Post>> GetPosts()
+        public IEnumerable<Post> GetPosts(PostQueryFilter filters)
         {
-            return await _unitOfWork.RepoPost.GetAll();
+            var posts = _unitOfWork.RepoPost.GetAll();
+            if (filters.UserId.HasValue)
+            {
+                posts = posts.Where(ele => ele.UserId == filters.UserId);
+            }
+            if (filters.Date.HasValue)
+            {
+                posts = posts.Where(ele => ele.Date.ToShortDateString() == filters.Date?.ToShortDateString());
+            }
+            if (!string.IsNullOrWhiteSpace(filters.Description))
+            {
+                posts = posts.Where(ele => ele.Description.ToLower().Contains(filters.Description.ToLower()));
+            }
+            return posts;
         }
 
         public async Task Insert(Post post)
@@ -67,7 +82,8 @@ namespace Uibasoft.Smedia.Core.Services
 
         public async Task<bool> UpdatePost(Post post)
         {
-           await _unitOfWork.RepoPost.Update(post);
+            _unitOfWork.RepoPost.Update(post);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
     }
