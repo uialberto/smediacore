@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Uibasoft.Smedia.Core.CustomEntities;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Exceptions;
 using Uibasoft.Smedia.Core.Interfaces;
@@ -31,9 +33,12 @@ namespace Uibasoft.Smedia.Core.Services
             return await _unitOfWork.RepoPost.GetById(id);
         }
 
-        public IEnumerable<Post> GetPosts(PostQueryFilter filters)
+        public PageList<Post> GetPosts(PostQueryFilter filters)
         {
             var posts = _unitOfWork.RepoPost.GetAll();
+
+            #region Filtros
+
             if (filters.UserId.HasValue)
             {
                 posts = posts.Where(ele => ele.UserId == filters.UserId);
@@ -46,7 +51,18 @@ namespace Uibasoft.Smedia.Core.Services
             {
                 posts = posts.Where(ele => ele.Description.ToLower().Contains(filters.Description.ToLower()));
             }
-            return posts;
+
+            #endregion
+
+
+            #region Paginacion
+
+            var pagePosts = PageList<Post>.Create(posts, filters.PageIndex, filters.PageSize);
+            
+            #endregion
+
+
+            return pagePosts;
         }
 
         public async Task Insert(Post post)
