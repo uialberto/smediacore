@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Uibasoft.Smedia.Core.CustomEntities;
 
 namespace Smedia.WebApi.Responses
 {
@@ -12,5 +13,7 @@ namespace Smedia.WebApi.Responses
             Data = data;
         }
         public TData  Data { get; set; }
+
+        public MetaData MetaData { get; set; }
     }
 }

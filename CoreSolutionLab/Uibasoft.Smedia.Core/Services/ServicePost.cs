@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,10 +17,11 @@ namespace Uibasoft.Smedia.Core.Services
     public class ServicePost : IServicePost
     {
         private readonly IUnitOfWork _unitOfWork;
-        
-        public ServicePost(IUnitOfWork unitOfWork)
+        private readonly PaginationOptions _paginationOptions;
+        public ServicePost(IUnitOfWork unitOfWork, IOptions<PaginationOptions> pOptions)
         {
-            _unitOfWork = unitOfWork;            
+            _unitOfWork = unitOfWork;
+            _paginationOptions = pOptions.Value;
         }
 
         public async Task<bool> DeletePost(int id)
@@ -35,6 +38,10 @@ namespace Uibasoft.Smedia.Core.Services
 
         public PageList<Post> GetPosts(PostQueryFilter filters)
         {
+
+            filters.PageIndex = filters.PageIndex == 0 ? _paginationOptions.DefaultPageIndex : filters.PageIndex;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
             var posts = _unitOfWork.RepoPost.GetAll();
 
             #region Filtros

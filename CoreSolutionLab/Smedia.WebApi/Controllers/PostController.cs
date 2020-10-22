@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Smedia.WebApi.Responses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Uibasoft.Smedia.Core.CustomEntities;
 using Uibasoft.Smedia.Core.DTOs;
 using Uibasoft.Smedia.Core.Entities;
-using Uibasoft.Smedia.Core.Interfaces;
 using Uibasoft.Smedia.Core.QueryFilters;
 using Uibasoft.Smedia.Core.Services;
+using Uibasoft.Smedia.DataAccess.Interfaces;
 
 namespace Smedia.WebApi.Controllers
 {
@@ -22,28 +21,38 @@ namespace Smedia.WebApi.Controllers
     {
         private readonly IServicePost _servicePost;
         private readonly IMapper _mapper;
-        public PostController(IServicePost pServicePost, IMapper pMapper)
+        private readonly IUriService _uriService;
+        public PostController(IServicePost pServicePost, IMapper pMapper, IUriService pUriService)
         {
             _servicePost = pServicePost ?? throw new ArgumentNullException(nameof(pServicePost));
             _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));
+            _uriService = pUriService ?? throw new ArgumentNullException(nameof(pUriService));
         }
-        [HttpGet]
+        [HttpGet(Name = nameof(GetPosts))]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
         public IActionResult GetPosts([FromQuery] PostQueryFilter filters)
         {
             var posts = _servicePost.GetPosts(filters);
             var postsDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
-            var response = new ApiResponse<IEnumerable<PostDto>>(postsDtos);
-            var metadata = new
+
+            var metadata = new MetaData
             {
-                posts.TotalCount,
-                posts.PageSize,
-                posts.CurrentPage,
-                posts.TotalPages,
-                posts.HasNextPage,
-                posts.HasPreviousPage
+                TotalCount = posts.TotalCount,
+                PageSize = posts.PageSize,
+                CurrentPage = posts.CurrentPage,
+                TotalPages = posts.TotalPages,
+                HasNextPage = posts.HasNextPage,
+                HasPreviousPage = posts.HasPreviousPage,
+                NextPageUrl = _uriService.GetPostPaginationUrl(filters, Url.RouteUrl(nameof(GetPosts))).ToString(),
+                PreviousPageUrl = _uriService.GetPostPaginationUrl(filters, Url.RouteUrl(nameof(GetPosts))).ToString()
             };
+
+            var response = new ApiResponse<IEnumerable<PostDto>>(postsDtos)
+            {
+                MetaData = metadata
+            };
+
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return Ok(response);
         }
@@ -62,21 +71,21 @@ namespace Smedia.WebApi.Controllers
             await _servicePost.Insert(post);
             postDto = _mapper.Map<PostDto>(post);
             var response = new ApiResponse<PostDto>(postDto);
-            return Ok(response);            
+            return Ok(response);
         }
         [HttpPut]
         public async Task<IActionResult> Put(int id, PostDto postDto)
         {
             var post = _mapper.Map<Post>(postDto);
             post.Id = id;
-            var result = await  _servicePost.UpdatePost(post);
+            var result = await _servicePost.UpdatePost(post);
             var response = new ApiResponse<bool>(result);
-            return Ok(response);            
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
-        {            
+        {
             var result = await _servicePost.DeletePost(id);
             var response = new ApiResponse<bool>(result);
             return Ok(response);
