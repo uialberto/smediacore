@@ -15,6 +15,7 @@ using Uibasoft.Smedia.DataAccess.Interfaces;
 
 namespace Smedia.WebApi.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -28,6 +29,11 @@ namespace Smedia.WebApi.Controllers
             _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));
             _uriService = pUriService ?? throw new ArgumentNullException(nameof(pUriService));
         }
+        /// <summary>
+        /// Busqueda de Post con filtros.
+        /// </summary>
+        /// <param name="filters">Filtros de busqueda.</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(GetPosts))]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]

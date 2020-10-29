@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Smedia.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Smedia.WebApi.Controllers.PostController.GetPosts(Uibasoft.Smedia.Core.QueryFilters.PostQueryFilter)">
+            <summary>
+            Busqueda de Post con filtros.
+            </summary>
+            <param name="filters">Filtros de busqueda.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
