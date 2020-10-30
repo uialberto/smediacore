@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Smedia.WebApi.Responses;
@@ -15,6 +16,7 @@ using Uibasoft.Smedia.DataAccess.Interfaces;
 
 namespace Smedia.WebApi.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
