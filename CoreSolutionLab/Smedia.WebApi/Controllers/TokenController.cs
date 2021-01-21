@@ -36,6 +36,11 @@ namespace Smedia.WebApi.Controllers
 
         private string GenerateToken()
         {
+            // VENTAJAS ES STATELESS 
+            // EL TOKEN DE SEGURIDAD ES STATELESS
+            // USO DE APIS - WEB - APP
+
+
             // Header
             var _symetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
             var signingCredentials = new SigningCredentials(_symetricKey, SecurityAlgorithms.HmacSha256);
