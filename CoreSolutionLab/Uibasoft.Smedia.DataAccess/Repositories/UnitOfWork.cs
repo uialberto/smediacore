@@ -15,6 +15,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         private readonly IRepoPost _repoPost;
         private readonly IRepository<User> _repoUser;
         private readonly IRepository<Comment> _repoComment;
+        private readonly IRepoSecurity _repoSecurities;
 
         public UnitOfWork(SmediaContext context)
         {
@@ -25,6 +26,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         public IRepository<User> RepoUser => _repoUser ?? new BaseRepository<User>(_context);
 
         public IRepository<Comment> RepoComment => _repoComment ?? new BaseRepository<Comment>(_context);
+        public IRepoSecurity RepoSecurities => _repoSecurities ?? new RepoSecurity(_context);
 
         public void Dispose()
         {

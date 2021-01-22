@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.CustomEntities;
 using Uibasoft.Smedia.Core.DTOs;
 using Uibasoft.Smedia.Core.Entities;
+using Uibasoft.Smedia.Core.Interfaces;
 using Uibasoft.Smedia.Core.QueryFilters;
 using Uibasoft.Smedia.Core.Services;
 using Uibasoft.Smedia.DataAccess.Interfaces;

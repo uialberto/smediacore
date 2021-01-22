@@ -4,7 +4,7 @@ using Uibasoft.Smedia.Core.CustomEntities;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.QueryFilters;
 
-namespace Uibasoft.Smedia.Core.Services
+namespace Uibasoft.Smedia.Core.Interfaces
 {
     public interface IServicePost
     {

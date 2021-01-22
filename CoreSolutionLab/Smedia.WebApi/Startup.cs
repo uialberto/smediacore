@@ -63,6 +63,7 @@ namespace Smedia.WebApi
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddTransient<IServicePost, ServicePost>();
+            services.AddTransient<ISecurityService, SecurityService>();
             services.AddSingleton<IUriService>(provider => 
             {
                 var accesor = provider.GetRequiredService<IHttpContextAccessor>();

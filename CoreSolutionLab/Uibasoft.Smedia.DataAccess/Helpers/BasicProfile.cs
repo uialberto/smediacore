@@ -10,6 +10,11 @@ namespace Uibasoft.Smedia.DataAccess.Helpers
         {
             CreateMap<Post, PostDto>();
             CreateMap<PostDto, Post>();
+
+            //CreateMap<Security, SecurityDto>();
+            //CreateMap<SecurityDto, Security>();
+
+            CreateMap<Security, SecurityDto>().ReverseMap();
         }
     }
 }

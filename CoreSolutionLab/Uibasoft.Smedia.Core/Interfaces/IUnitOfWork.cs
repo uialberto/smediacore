@@ -11,6 +11,7 @@ namespace Uibasoft.Smedia.Core.Interfaces
         IRepoPost RepoPost { get; }
         IRepository<User> RepoUser { get; }
         IRepository<Comment> RepoComment { get; }
+        IRepoSecurity RepoSecurities { get; }
         void SaveChanges();
         Task SaveChangesAsync();
     }
