@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Uibasoft.Smedia.Core\Uibasoft.Smedia.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Options\" />
-  </ItemGroup>
-
 </Project>

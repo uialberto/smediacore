@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +54,7 @@ namespace Smedia.WebApi
             });
 
             services.Configure<PaginationOptions>(Configuration.GetSection("Pagination")); // Singleton
+            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions")); // Singleton
 
             // Dependencias de Aplicacion
             services.AddDbContext<SmediaContext>(options =>
