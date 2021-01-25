@@ -29,7 +29,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
         {
             TElement entity = await  GetById(id);
             _entities.Remove(entity);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public IEnumerable<TElement> GetAll()

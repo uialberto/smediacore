@@ -105,7 +105,11 @@ namespace Uibasoft.Smedia.Core.Services
 
         public async Task<bool> UpdatePost(Post post)
         {
-            _unitOfWork.RepoPost.Update(post);
+            var existingPost = await _unitOfWork.RepoPost.GetById(post.Id);
+            existingPost.Image = post.Image;
+            existingPost.Description = post.Description;
+
+            _unitOfWork.RepoPost.Update(existingPost);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

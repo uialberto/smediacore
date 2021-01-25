@@ -23,6 +23,7 @@ using Uibasoft.Smedia.DataAccess.Options;
 using Uibasoft.Smedia.DataAccess.Repositories;
 using Uibasoft.Smedia.DataAccess.Services;
 using Uibasoft.Smedia.DataAccess.UnitOfWorks;
+using Uibasoft.Smedia.DataAccess.Extensions;
 
 namespace Smedia.WebApi
 {
@@ -53,36 +54,12 @@ namespace Smedia.WebApi
                 //options.SuppressModelStateInvalidFilter = true; // Sin Validar el Modelo
             });
 
-            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination")); // Singleton
-            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions")); // Singleton
+            services.AddOptions(Configuration);
+            services.AddDbContexts(Configuration);
+            //services.AddOptions(Configuration).AddDbContexts(Configuration); // Encadenamiento de Metodos
 
-            // Dependencias de Aplicacion
-            services.AddDbContext<SmediaContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SmediaContext")));
-
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-
-            services.AddTransient<IServicePost, ServicePost>();
-            services.AddTransient<ISecurityService, SecurityService>();
-            services.AddSingleton<IPasswordService, PasswordService>();
-            services.AddSingleton<IUriService>(provider => 
-            {
-                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accesor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-                return new UriService(absoluteUri);
-            });
-
-            services.AddSwaggerGen(doc =>
-            {
-                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Social Media API", Version = "v1" });
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                doc.IncludeXmlComments(xmlPath);
-
-            });
+            services.AddServices();
+            services.AddSwaggers($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
 
 
             services.AddAuthentication(options =>
@@ -102,9 +79,6 @@ namespace Smedia.WebApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:SecretKey"]))
                 };
             });
-
-
-
 
             services.AddMvc(options =>
             {
