@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +19,7 @@ using Uibasoft.Smedia.Core.Interfaces;
 using Uibasoft.Smedia.Core.Services;
 using Uibasoft.Smedia.DataAccess.Filters;
 using Uibasoft.Smedia.DataAccess.Interfaces;
+using Uibasoft.Smedia.DataAccess.Options;
 using Uibasoft.Smedia.DataAccess.Repositories;
 using Uibasoft.Smedia.DataAccess.Services;
 using Uibasoft.Smedia.DataAccess.UnitOfWorks;
@@ -66,6 +66,7 @@ namespace Smedia.WebApi
 
             services.AddTransient<IServicePost, ServicePost>();
             services.AddTransient<ISecurityService, SecurityService>();
+            services.AddSingleton<IPasswordService, PasswordService>();
             services.AddSingleton<IUriService>(provider => 
             {
                 var accesor = provider.GetRequiredService<IHttpContextAccessor>();

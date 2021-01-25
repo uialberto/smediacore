@@ -15,7 +15,7 @@ namespace Uibasoft.Smedia.DataAccess.Repositories
 
         public async Task<Security> GetLoginByCredential(UserLogin login)
         {
-            return await _entities.FirstOrDefaultAsync(ele => ele.Username == login.User && ele.Password == login.Password);
+            return await _entities.FirstOrDefaultAsync(ele => ele.Username == login.User);
         }
     }
 }

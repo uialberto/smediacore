@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Uibasoft.Smedia.DataAccess.Interfaces;
@@ -8,7 +9,7 @@ using Uibasoft.Smedia.DataAccess.Options;
 
 namespace Uibasoft.Smedia.DataAccess.Services
 {
-    public class PasswordService : IPasswordHasher
+    public class PasswordService : IPasswordService
     {
         private readonly PasswordOptions _options;
         public PasswordService(IOptions<PasswordOptions> options)
@@ -17,7 +18,21 @@ namespace Uibasoft.Smedia.DataAccess.Services
         }
         public bool Check(string hash, string password)
         {
-            throw new NotImplementedException();
+            var parts = hash.Split('.');
+            if (parts.Length != 3)
+            {
+                throw new FormatException("Unexpected Hash Format.");
+            }
+            
+            var iterations = Convert.ToInt32(parts[0]);
+            var salt = Convert.FromBase64String(parts[1]);
+            var key = Convert.FromBase64String(parts[2]);
+            using (var algorithm = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                var keyToCkeck = algorithm.GetBytes(_options.KeySize);
+                return keyToCkeck.SequenceEqual(key);
+            }
+
         }
 
         public string Hash(string password)

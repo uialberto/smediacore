@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Uibasoft.Smedia.Core.Entities;
 using Uibasoft.Smedia.Core.Interfaces;
+using Uibasoft.Smedia.DataAccess.Interfaces;
 
 namespace Smedia.WebApi.Controllers
 {
@@ -17,10 +18,12 @@ namespace Smedia.WebApi.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ISecurityService _securityService;
-        public TokenController(IConfiguration configuration, ISecurityService securityService)
+        private readonly IPasswordService _passService;
+        public TokenController(IConfiguration configuration, ISecurityService securityService, IPasswordService passService)
         {
             _configuration = configuration;
             _securityService = securityService;
+            _passService = passService;
         }
         [HttpPost]
         public async Task<IActionResult> Authentication(UserLogin login)
@@ -37,7 +40,8 @@ namespace Smedia.WebApi.Controllers
         private  async Task<(bool, Security)> IsValidUser(UserLogin login)
         {
             var user = await _securityService.GetLoginByCredentials(login);
-            return (user != null, user);
+            var isValid = _passService.Check(user.Password, login.Password);
+            return (isValid, user);
         }
 
         private string GenerateToken(Security security)

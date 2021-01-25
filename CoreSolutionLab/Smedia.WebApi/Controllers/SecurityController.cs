@@ -18,24 +18,28 @@ using Uibasoft.Smedia.DataAccess.Interfaces;
 
 namespace Smedia.WebApi.Controllers
 {
-    [Authorize(Roles = nameof(RoleType.Administrador))]
+    //[Authorize(Roles = nameof(RoleType.Administrador))]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class SecurityController : ControllerBase
     {
         private readonly ISecurityService _security;
-        private readonly IMapper _mapper;        
-        public SecurityController(ISecurityService security, IMapper pMapper)
+        private readonly IMapper _mapper;
+        private readonly IPasswordService _passService;
+        public SecurityController(ISecurityService security, IMapper pMapper, IPasswordService passService)
         {
             _security = security ?? throw new ArgumentNullException(nameof(security));
-            _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));            
+            _mapper = pMapper ?? throw new ArgumentNullException(nameof(pMapper));
+            _passService = passService ?? throw new ArgumentNullException(nameof(passService));
         }
         
         [HttpPost]
         public async Task<IActionResult> Post(SecurityDto securityDto)
         {
             var security = _mapper.Map<Security>(securityDto);
+            var hashPassword = _passService.Hash(security.Password);
+            security.Password = hashPassword;
             await _security.RegisterUser(security);
             securityDto = _mapper.Map<SecurityDto>(security);
             var response = new ApiResponse<SecurityDto>(securityDto);
